@@ -10,11 +10,16 @@ sudo apt-get update
 sudo apt-get upgrade -y
 
 #apt-get
-sudo apt install apache2 git qpdf nodejs npm php sqlite3 libapache2-mod-php php-mbstring php-xmlrpc php-soap php-gd php-xml php-cli php-zip php-bcmath php-tokenizer php-json php-pear php-curl php-redis php7.4-zip php-mysql php-sqlite3 -y
+sudo apt install apache2 git qpdf npm php sqlite3 libapache2-mod-php php-mbstring php-xmlrpc php-soap php-gd php-xml php-cli php-zip php-bcmath php-tokenizer php-json php-pear php-curl php-redis php7.4-zip php-mysql php-sqlite3 -y
 
 #softwares
 cd /tmp
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+wget -q0- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+source ~/.bashrc
+npm cache clean -f
+npm install -g n
+n stable
+source ~/.bashrc
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
 php -r "if (hash_file('sha384', 'composer-setup.php') === '906a84df04cea2aa72f40b5f787e49f22d4c2f19492ac310e8cba5b96ac8b64115ac402c8cd292b8a03482574915d1a8') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
 php composer-setup.php
