@@ -189,7 +189,7 @@ jobs:
             sudo chown www-data:www-data -R ${{ matrix.server.app_path }}
             sudo find ${{ matrix.server.app_path }} -type f -exec chmod 644 {} \;
             sudo find ${{ matrix.server.app_path }} -type d -exec chmod 755 {} \;
-            sudo chmod 755 -R storage
+            sudo chmod 755 -R ${{ matrix.server.app_path }}/storage
 
       - name: Create .env file
         uses: appleboy/ssh-action@master
