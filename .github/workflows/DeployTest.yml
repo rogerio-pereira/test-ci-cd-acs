@@ -177,6 +177,20 @@ jobs:
       #       #sudo chmod -R ug+rwx storage ${{ matrix.server.app_path }}/bootstrap/cache
       #       sudo chmod 755 -R storage
 
+      - name: Set Folder permissions
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ matrix.server.host }}
+          username: ${{ matrix.server.username }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ matrix.server.port }}
+          script: |
+            echo "Set folder permissions"
+            sudo chown www-data:www-data -R ${{ matrix.server.app_path }}
+            sudo find ${{ matrix.server.app_path }} -type f -exec chmod 644 {} \;
+            sudo find ${{ matrix.server.app_path }} -type d -exec chmod 755 {} \;
+            sudo chmod 755 -R storage
+
       - name: Create .env file
         uses: appleboy/ssh-action@master
         env:
@@ -222,7 +236,7 @@ jobs:
       #       sudo docker-compose run ${{ matrix.server.container }} /bin/bash -c "php artisan migrate"
       #       sudo docker-compose run ${{ matrix.server.container }} /bin/bash -c "php artisan db:seed"
 
-      - name: Run commands
+      - name: Run PHP commands
         uses: appleboy/ssh-action@master
         with:
           host: ${{ matrix.server.host }}
@@ -230,12 +244,23 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ matrix.server.port }}
           script: |
-            echo "Running commands"
+            echo "Running PHP commands"
             cd ${{ matrix.server.app_path }}
             composer install --no-interaction
             php artisan key:generate
             php artisan optimize
             php artisan migrate
+
+      - name: Run npm commands
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ matrix.server.host }}
+          username: ${{ matrix.server.username }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ matrix.server.port }}
+          script: |
+            echo "Running npm commands"
+            cd ${{ matrix.server.app_path }}
             npm install
             npm run prod
 
