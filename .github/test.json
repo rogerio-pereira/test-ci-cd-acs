@@ -1,0 +1,10 @@
+[
+    {
+        "name": "test-1",
+        "host": "104.131.30.15",
+        "username": "root",
+        "port": "22",
+        "upload_path": "/tmp",
+        "app_path": "/var/www/mahi"
+    }
+]
