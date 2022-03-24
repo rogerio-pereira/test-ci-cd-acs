@@ -45,6 +45,7 @@ sudo find mahi -type f -exec chmod 644 {} \;
 sudo find mahi -type d -exec chmod 775 {} \;
 sudo usermod -a -G www-data root
 sudo usermod -a -G www-data rogerio
+sudo usermod -a -G sudo rogerio
 cd mahi
 cp .env.example .env
 touch database/database.sqlite
