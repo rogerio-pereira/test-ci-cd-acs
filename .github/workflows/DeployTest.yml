@@ -128,7 +128,7 @@ jobs:
           script: |
             echo "Extracting file"
             mkdir ${{ matrix.server.app_path }}
-            tar xzf ${{ matrix.server.upload_path }}/app.tar.gz -C ${{ matrix.server.app_path }}
+            echo ${{ secrets.USER_PASS }} | sudo -S -k tar xzf ${{ matrix.server.upload_path }}/app.tar.gz -C ${{ matrix.server.app_path }}
 
       - name: Remove zip file
         uses: appleboy/ssh-action@master
@@ -139,21 +139,21 @@ jobs:
           port: ${{ matrix.server.port }}
           script: |
             echo "Remove zip file"
-            rm ${{ matrix.server.upload_path }}//app.tar.gz
+            echo ${{ secrets.USER_PASS }} | sudo -S -k rm ${{ matrix.server.upload_path }}//app.tar.gz
 
-      # - name: Set Folder permissions
-      #   uses: appleboy/ssh-action@master
-      #   with:
-      #     host: ${{ matrix.server.host }}
-      #     username: ${{ matrix.server.username }}
-      #     key: ${{ secrets.SSH_KEY }}
-      #     port: ${{ matrix.server.port }}
-      #     script: |
-      #       echo "Set folder permissions"
-      #       chown www-data:www-data -R ${{ matrix.server.app_path }}
-      #       find ${{ matrix.server.app_path }} -type f -exec chmod 644 {} \;
-      #       find ${{ matrix.server.app_path }} -type d -exec chmod 755 {} \;
-      #       chmod 775 -R ${{ matrix.server.app_path }}/storage
+      - name: Set Folder permissions
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ matrix.server.host }}
+          username: ${{ matrix.server.username }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ matrix.server.port }}
+          script: |
+            echo "Set folder permissions"
+            echo ${{ secrets.USER_PASS }} | sudo -S -k chown www-data:www-data -R ${{ matrix.server.app_path }}
+            echo ${{ secrets.USER_PASS }} | sudo -S -k find ${{ matrix.server.app_path }} -type f -exec chmod 644 {} \;
+            echo ${{ secrets.USER_PASS }} | sudo -S -k find ${{ matrix.server.app_path }} -type d -exec chmod 755 {} \;
+            echo ${{ secrets.USER_PASS }} | sudo -S -k chmod 775 -R ${{ matrix.server.app_path }}/storage
 
       - name: Create .env file
         uses: appleboy/ssh-action@master
