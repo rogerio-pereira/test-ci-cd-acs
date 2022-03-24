@@ -125,10 +125,10 @@ jobs:
           port: ${{ matrix.server.port }}
           script: |
             echo "Set folder permissions"
-            chown www-data:www-data -R ${{ matrix.server.app_path }}
-            find ${{ matrix.server.app_path }} -type f -exec chmod 644 {} \;
-            find ${{ matrix.server.app_path }} -type d -exec chmod 775 {} \;
-            chmod 775 -R ${{ matrix.server.app_path }}/storage
+            echo ${{ secrets.USER_PASS }} | sudo -S -k chown www-data:www-data -R ${{ matrix.server.app_path }}
+            echo ${{ secrets.USER_PASS }} | sudo -S -k find ${{ matrix.server.app_path }} -type f -exec chmod 644 {} \;
+            echo ${{ secrets.USER_PASS }} | sudo -S -k find ${{ matrix.server.app_path }} -type d -exec chmod 775 {} \;
+            echo ${{ secrets.USER_PASS }} | sudo -S -k chmod 775 -R ${{ matrix.server.app_path }}/storage
     
       - name: Extract zip file
         uses: appleboy/ssh-action@master
