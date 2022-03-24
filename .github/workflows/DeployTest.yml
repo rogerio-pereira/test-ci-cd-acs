@@ -128,7 +128,7 @@ jobs:
           script: |
             echo "Extracting file"
             mkdir ${{ matrix.server.app_path }}
-            sudo tar xzf ${{ matrix.server.upload_path }}/app.tar.gz -C ${{ matrix.server.app_path }}
+            tar xzf ${{ matrix.server.upload_path }}/app.tar.gz -C ${{ matrix.server.app_path }}
 
       - name: Remove zip file
         uses: appleboy/ssh-action@master
@@ -139,28 +139,9 @@ jobs:
           port: ${{ matrix.server.port }}
           script: |
             echo "Remove zip file"
-            sudo rm ${{ matrix.server.upload_path }}//app.tar.gz
+            rm ${{ matrix.server.upload_path }}//app.tar.gz
 
-      # - name: Installs Docker
-      #   uses: appleboy/ssh-action@master
-      #   with:
-      #     host: ${{ matrix.server.host }}
-      #     username: ${{ matrix.server.username }}
-      #     key: ${{ secrets.SSH_KEY }}
-      #     port: ${{ matrix.server.port }}
-      #     script: |
-      #       echo "Remove zip file"
-      #       sudo apt-get update
-      #       sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
-      #       sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-      #       sudo echo -e "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-      #       sudo apt-get update
-      #       sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose -y
-      #       sudo groupadd docker
-      #       sudo usermod -aG docker ${{ matrix.server.username }}
-      #       sudo service docker start
-            
-      # - name: Set folder permissions
+      # - name: Set Folder permissions
       #   uses: appleboy/ssh-action@master
       #   with:
       #     host: ${{ matrix.server.host }}
@@ -169,27 +150,10 @@ jobs:
       #     port: ${{ matrix.server.port }}
       #     script: |
       #       echo "Set folder permissions"
-      #       cd ${{ matrix.server.app_path }}
-      #       sudo chown -R ${{ matrix.server.username }}:www-data .
-      #       #sudo find . -type f -exec chmod 664 {} \;   
-      #       #sudo find . -type d -exec chmod 775 {} \;
-      #       #sudo chgrp -R www-data storage ${{ matrix.server.app_path }}/bootstrap/cache
-      #       #sudo chmod -R ug+rwx storage ${{ matrix.server.app_path }}/bootstrap/cache
-      #       sudo chmod 755 -R storage
-
-      - name: Set Folder permissions
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ matrix.server.host }}
-          username: ${{ matrix.server.username }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ matrix.server.port }}
-          script: |
-            echo "Set folder permissions"
-            sudo chown www-data:www-data -R ${{ matrix.server.app_path }}
-            sudo find ${{ matrix.server.app_path }} -type f -exec chmod 644 {} \;
-            sudo find ${{ matrix.server.app_path }} -type d -exec chmod 755 {} \;
-            sudo chmod 755 -R ${{ matrix.server.app_path }}/storage
+      #       chown www-data:www-data -R ${{ matrix.server.app_path }}
+      #       find ${{ matrix.server.app_path }} -type f -exec chmod 644 {} \;
+      #       find ${{ matrix.server.app_path }} -type d -exec chmod 755 {} \;
+      #       chmod 775 -R ${{ matrix.server.app_path }}/storage
 
       - name: Create .env file
         uses: appleboy/ssh-action@master
@@ -205,36 +169,6 @@ jobs:
             echo "Create .env file"
             cd ${{ matrix.server.app_path }}
             printf "%s" "$LARAVEL_ENV" > "${{ matrix.server.app_path }}/.env"
-            
-      # - name: Starting docker
-      #   uses: appleboy/ssh-action@master
-      #   with:
-      #     host: ${{ matrix.server.host }}
-      #     username: ${{ matrix.server.username }}
-      #     key: ${{ secrets.SSH_KEY }}
-      #     port: ${{ matrix.server.port }}
-      #     script: |
-      #       echo "Starting docker"
-      #       cd ${{ matrix.server.app_path }}
-      #       sudo docker-compose up -d --build
-            
-      # - name: Run commands inside docker
-      #   uses: appleboy/ssh-action@master
-      #   with:
-      #     host: ${{ matrix.server.host }}
-      #     username: ${{ matrix.server.username }}
-      #     key: ${{ secrets.SSH_KEY }}
-      #     port: ${{ matrix.server.port }}
-      #     script: |
-      #       echo "Running commands inside docker"
-      #       cd ${{ matrix.server.app_path }}
-      #       sudo docker-compose run ${{ matrix.server.container }} /bin/bash -c "composer install"
-      #       sudo docker-compose run ${{ matrix.server.container }} /bin/bash -c "php artisan key:generate"
-      #       sudo docker-compose run ${{ matrix.server.container }} /bin/bash -c "npm install"
-      #       sudo docker-compose run ${{ matrix.server.container }} /bin/bash -c "npm run prod"
-      #       sudo docker-compose run ${{ matrix.server.container }} /bin/bash -c "php artisan storage:link"
-      #       sudo docker-compose run ${{ matrix.server.container }} /bin/bash -c "php artisan migrate"
-      #       sudo docker-compose run ${{ matrix.server.container }} /bin/bash -c "php artisan db:seed"
 
       - name: Run PHP commands
         uses: appleboy/ssh-action@master

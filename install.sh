@@ -6,7 +6,7 @@ echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDKcUTIqFph2chK+QRt15NbD9fRLqcF4UHHbd
 chown -R $USER:$USER ~/.ssh
 
 #user Rogerio
-sudo adduser rogerio --disabled-password
+sudo adduser rogerio
 sudo usermod -a -G sudo rogerio
 mkdir -p /home/rogerio/.ssh
 echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDKcUTIqFph2chK+QRt15NbD9fRLqcF4UHHbdEv8k1XPxvlYir8SBGCb+m9XXV/JHyqZP2uyPnDd47xnnX19L03Tqm6YDiTz1h/eFbOwe+8R3M1War6cGWWKpQqVwo0FUrjVfwkqnvdMTP490x2/SNiwGrwU9IU1YfX2LxiPQmWC1R7e6OR4kWu8mB2Yu8u9puq8gJt334s9DHEAmqmbdXZMYwWsaLaNxIV/tbWWj2DDanyyxsL3vyuvln496iIuYzcw4HvSh0ZtnJhX5MjSL7tYCqGKCVNkpNZ7zo8csvQ3lW2u2IcFZEo1M50EwQOVd1N3CV0B+hOW2qHC1eZegrUlWExAtQ3el7ZRSfr0jNTjDOGDvHQasgy3KbM5VVQtLFeMGaaYimOJojTQ8NRbUFDZ1AJMuQKv/GktXgOHztplrw6udEcy5oa0L0ARayFM8sRezCa2oUZnNz06RvMPd73xWH+WG8pAk+wO4Gy8RHKpK2CUcxRvv+1GIQAl1mewHPo+tbt0ZNdUjg/8oMshzkZkxvyHCvW9XliIVNmtKGM6aMj+tXy2gNVm8phqfanWSVr8MjCU3xcvSturnMeNzAUReqanubbvG+aJkCwIYWDwhPS9aI9WqyfL4TIWdWI9okFpgZVK3htbLhIg28nSft2LzZqB3YeAGMk/NA5M3q3hQ== rpereira@acslabtest.com" >> /home/rogerio/.ssh/authorized_keys
@@ -42,7 +42,7 @@ sudo git config --system core.longpaths true
 git clone https://github.com/rogerio-pereira/test-ci-cd-acs.git ./mahi
 sudo chown www-data:www-data -R mahi
 sudo find mahi -type f -exec chmod 644 {} \;
-sudo find mahi -type d -exec chmod 755 {} \;
+sudo find mahi -type d -exec chmod 775 {} \;
 sudo usermod -a -G www-data root
 sudo usermod -a -G www-data rogerio
 cd mahi
