@@ -232,10 +232,10 @@ jobs:
           script: |
             echo "Running commands"
             cd ${{ matrix.server.app_path }}
-            sudo composer install --no-interaction
-            sudo php artisan key:generate
-            sudo php artisan optimize
-            sudo php artisan migrate
+            composer install --no-interaction
+            php artisan key:generate
+            php artisan optimize
+            php artisan migrate
             npm install
             npm run prod
 
