@@ -34,9 +34,9 @@ cd /var/www
 sudo git config --system core.longpaths true
 git clone https://github.com/rogerio-pereira/test-ci-cd-acs.git ./mahi
 sudo chown www-data:www-data -R mahi
-sudo chown root -R mahi
 sudo find mahi -type f -exec chmod 644 {} \;
 sudo find mahi -type d -exec chmod 755 {} \;
+sudo usermod -a -G www-data root
 cd mahi
 cp .env.example .env
 touch database/database.sqlite
