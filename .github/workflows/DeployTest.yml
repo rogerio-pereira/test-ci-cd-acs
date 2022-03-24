@@ -128,7 +128,7 @@ jobs:
           script: |
             echo "Extracting file"
             mkdir ${{ matrix.server.app_path }}
-            tar xzf ${{ matrix.server.upload_path }}/app.tar.gz -C ${{ matrix.server.app_path }}
+            echo ${{ secrets.USER_PASS }} | sudo -S -k tar xzf ${{ matrix.server.upload_path }}/app.tar.gz -C ${{ matrix.server.app_path }}
       
       - name: Set Folder permissions
         uses: appleboy/ssh-action@master
