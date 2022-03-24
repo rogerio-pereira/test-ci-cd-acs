@@ -115,20 +115,6 @@ jobs:
             port: ${{ matrix.server.port }}
             source: app.tar.gz
             target: ${{ matrix.server.upload_path }}
-            
-      - name: Set Folder permissions
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ matrix.server.host }}
-          username: ${{ matrix.server.username }}
-          key: ${{ secrets.SSH_KEY }}
-          port: ${{ matrix.server.port }}
-          script: |
-            echo "Set folder permissions"
-            echo ${{ secrets.USER_PASS }} | sudo -S -k chown www-data:www-data -R ${{ matrix.server.app_path }}
-            echo ${{ secrets.USER_PASS }} | sudo -S -k find ${{ matrix.server.app_path }} -type f -exec chmod 644 {} \;
-            echo ${{ secrets.USER_PASS }} | sudo -S -k find ${{ matrix.server.app_path }} -type d -exec chmod 775 {} \;
-            echo ${{ secrets.USER_PASS }} | sudo -S -k chmod 775 -R ${{ matrix.server.app_path }}/storage
     
       - name: Extract zip file
         uses: appleboy/ssh-action@master
@@ -143,6 +129,20 @@ jobs:
             echo "Extracting file"
             mkdir ${{ matrix.server.app_path }}
             tar xzf ${{ matrix.server.upload_path }}/app.tar.gz -C ${{ matrix.server.app_path }}
+      
+      - name: Set Folder permissions
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ matrix.server.host }}
+          username: ${{ matrix.server.username }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ matrix.server.port }}
+          script: |
+            echo "Set folder permissions"
+            echo ${{ secrets.USER_PASS }} | sudo -S -k chown www-data:www-data -R ${{ matrix.server.app_path }}
+            echo ${{ secrets.USER_PASS }} | sudo -S -k find ${{ matrix.server.app_path }} -type f -exec chmod 644 {} \;
+            echo ${{ secrets.USER_PASS }} | sudo -S -k find ${{ matrix.server.app_path }} -type d -exec chmod 775 {} \;
+            echo ${{ secrets.USER_PASS }} | sudo -S -k chmod 775 -R ${{ matrix.server.app_path }}/storage
 
       - name: Remove zip file
         uses: appleboy/ssh-action@master
