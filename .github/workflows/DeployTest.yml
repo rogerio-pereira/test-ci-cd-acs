@@ -92,7 +92,7 @@ jobs:
           script: |
             echo "Application down"
             cd ${{ matrix.server.app_path }}
-            sudo docker-compose run ${{ matrix.server.container }} /bin/bash -c "php artisan down"
+            php artisan down
       
         
   deploy:
@@ -257,4 +257,4 @@ jobs:
           script: |
             echo "Application up"
             cd ${{ matrix.server.app_path }}
-            sudo docker-compose run ${{ matrix.server.container }} /bin/bash -c "php artisan up"
+            php artisan up
