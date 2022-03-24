@@ -128,7 +128,7 @@ jobs:
           script: |
             echo "Extracting file"
             mkdir ${{ matrix.server.app_path }}
-            echo ${{ secrets.USER_PASS }} | sudo -S -k tar xzf ${{ matrix.server.upload_path }}/app.tar.gz -C ${{ matrix.server.app_path }}
+            tar xzf ${{ matrix.server.upload_path }}/app.tar.gz -C ${{ matrix.server.app_path }}
       
       - name: Set Folder permissions
         uses: appleboy/ssh-action@master
@@ -140,7 +140,7 @@ jobs:
           script: |
             echo "Set folder permissions"
             echo ${{ secrets.USER_PASS }} | sudo -S -k chown www-data:www-data -R ${{ matrix.server.app_path }}
-            echo ${{ secrets.USER_PASS }} | sudo -S -k find ${{ matrix.server.app_path }} -type f -exec chmod 644 {} \;
+            echo ${{ secrets.USER_PASS }} | sudo -S -k find ${{ matrix.server.app_path }} -type f -exec chmod 664 {} \;
             echo ${{ secrets.USER_PASS }} | sudo -S -k find ${{ matrix.server.app_path }} -type d -exec chmod 775 {} \;
             echo ${{ secrets.USER_PASS }} | sudo -S -k chmod 775 -R ${{ matrix.server.app_path }}/storage
 
@@ -168,7 +168,7 @@ jobs:
           script: |
             echo "Create .env file"
             cd ${{ matrix.server.app_path }}
-            echo ${{ secrets.USER_PASS }} | sudo -S -k printf "%s" "$LARAVEL_ENV" > "${{ matrix.server.app_path }}/.env"
+            printf "%s" "$LARAVEL_ENV" > "${{ matrix.server.app_path }}/.env"
 
       - name: Run PHP commands
         uses: appleboy/ssh-action@master
